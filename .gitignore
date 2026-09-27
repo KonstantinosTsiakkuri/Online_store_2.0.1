@@ -1,6 +1,7 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
+*.pyc
 *$py.class
 
 # C extensions
@@ -61,6 +62,7 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
+*.sqlite3
 *.sqlite*
 
 # Flask stuff:
@@ -154,6 +156,7 @@ activemq-data/
 .env
 .envrc
 .venv
+.venv/
 env/
 venv/
 ENV/
@@ -219,4 +222,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-Claude_code
+
+# Рабочие материалы (ТЗ, прототипы, отчёты)
+Claude_code/
