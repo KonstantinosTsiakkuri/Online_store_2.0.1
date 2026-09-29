@@ -1,0 +1,42 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'blog:post_list' %}">Блог</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-3">{{ post.title }}</h1>
+    <p class="text-muted small mb-4">
+        {{ post.created_at|date:"d.m.Y H:i" }} · просмотров: {{ post.views_count }}
+        {% if not post.is_published %}
+            · <span class="badge bg-warning text-dark">черновик</span>
+        {% endif %}
+    </p>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-5">
+            {% if post.preview %}
+                <img src="{{ post.preview.url }}" class="img-fluid rounded product-detail-image"
+                     alt="{{ post.title }}">
+            {% else %}
+                <div class="bg-secondary text-white text-center rounded product-thumb-empty">
+                    Нет изображения
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-7">
+            <p style="white-space: pre-line;">{{ post.content }}</p>
+
+            <div class="d-flex gap-2 mt-4">
+                <a href="{% url 'blog:post_update' post.pk %}" class="btn btn-outline-secondary">Редактировать</a>
+                <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-outline-danger">Удалить</a>
+                <a href="{% url 'blog:post_list' %}" class="btn btn-secondary ms-auto">&larr; К списку статей</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
