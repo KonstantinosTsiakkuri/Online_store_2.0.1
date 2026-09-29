@@ -1,0 +1,52 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4">{{ product.name }}</h1>
+
+    <div class="row g-4">
+        <div class="col-12 col-md-5">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded product-detail-image"
+                     alt="{{ product.name }}">
+            {% else %}
+                <div class="bg-secondary text-white text-center rounded product-thumb-empty">
+                    Нет изображения
+                </div>
+            {% endif %}
+        </div>
+        <div class="col-12 col-md-7">
+            <p class="fs-2 fw-bold text-primary">{{ product.price }} руб.</p>
+
+            <h2 class="h5">Описание</h2>
+            <p>{{ product.description|default:"Описание не заполнено." }}</p>
+
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <th scope="row" class="w-50">Категория</th>
+                        <td>{{ product.category.name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Дата создания</th>
+                        <td>{{ product.created_at|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Дата последнего изменения</th>
+                        <td>{{ product.updated_at|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <a href="{% url 'catalog:home' %}" class="btn btn-secondary">&larr; Вернуться на главную</a>
+        </div>
+    </div>
+{% endblock %}

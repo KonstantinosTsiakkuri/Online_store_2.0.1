@@ -1,0 +1,19 @@
+/* Единая высота блока с изображением товара в карточках каталога */
+.product-thumb {
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Заглушка, когда у товара нет картинки */
+.product-thumb-empty {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Изображение на детальной странице не растягивается сверх исходного размера */
+.product-detail-image {
+    max-height: 420px;
+    object-fit: contain;
+}

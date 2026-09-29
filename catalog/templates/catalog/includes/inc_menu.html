@@ -1,0 +1,27 @@
+{% comment %}Главное меню сайта. Описано только здесь, на страницы попадает через include.{% endcomment %}
+<div class="bg-dark text-white rounded p-3 h-100">
+    <p class="fw-bold">Меню</p>
+    <ul class="nav flex-column mb-3">
+        <li class="nav-item">
+            <a class="nav-link text-white px-0" href="{% url 'catalog:home' %}">Главная</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white px-0" href="#">Категории</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white px-0" href="#">Заказы</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white px-0" href="{% url 'catalog:contacts' %}">Контакты</a>
+        </li>
+    </ul>
+    <div class="dropdown">
+        <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+            Пользователь
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Профиль</a></li>
+            <li><a class="dropdown-item" href="#">Выход</a></li>
+        </ul>
+    </div>
+</div>
