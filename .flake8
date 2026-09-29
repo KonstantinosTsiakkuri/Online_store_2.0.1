@@ -1,4 +1,9 @@
 [flake8]
 max-line-length = 119
 extend-ignore = E203, W503
-exclude = .git,__pycache__,venv,.venv,migrations
+exclude = .git,__pycache__,venv,.venv,env,migrations,.mypy_cache
+# Заготовки, сгенерированные Django: импорты оставлены для будущего кода
+per-file-ignores =
+    catalog/admin.py:F401
+    catalog/models.py:F401
+    catalog/tests.py:F401
