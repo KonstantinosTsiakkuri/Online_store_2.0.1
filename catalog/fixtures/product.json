@@ -1,0 +1,132 @@
+[
+    {
+        "model": "catalog.product",
+        "pk": 1,
+        "fields": {
+            "name": "Apple iPhone 16 Pro",
+            "description": "Флагман с чипом A18 Pro, экраном 6.3 дюйма и титановым корпусом",
+            "image": "",
+            "category": 4,
+            "price": "119990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 2,
+        "fields": {
+            "name": "Samsung Galaxy S25",
+            "description": "Android-флагман с экраном Dynamic AMOLED 2X и камерой 200 Мп",
+            "image": "",
+            "category": 4,
+            "price": "89990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 3,
+        "fields": {
+            "name": "Xiaomi Redmi Note 14",
+            "description": "Доступный смартфон с большим аккумулятором и быстрой зарядкой",
+            "image": "",
+            "category": 4,
+            "price": "24990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 4,
+        "fields": {
+            "name": "Apple MacBook Air 13 M4",
+            "description": "Лёгкий ноутбук на чипе M4 с автономностью до 18 часов",
+            "image": "",
+            "category": 3,
+            "price": "134990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 5,
+        "fields": {
+            "name": "ASUS ROG Strix G16",
+            "description": "Игровой ноутбук с видеокартой RTX 5070 и экраном 165 Гц",
+            "image": "",
+            "category": 3,
+            "price": "179990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 6,
+        "fields": {
+            "name": "Lenovo ThinkPad E14",
+            "description": "Надёжный рабочий ноутбук с классической клавиатурой ThinkPad",
+            "image": "",
+            "category": 3,
+            "price": "79990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 7,
+        "fields": {
+            "name": "Apple AirPods Pro 3",
+            "description": "Беспроводные наушники с активным шумоподавлением и адаптивным звуком",
+            "image": "",
+            "category": 2,
+            "price": "24990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 8,
+        "fields": {
+            "name": "Sony WH-1000XM6",
+            "description": "Полноразмерные наушники с лучшим в классе шумоподавлением",
+            "image": "",
+            "category": 2,
+            "price": "39990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 9,
+        "fields": {
+            "name": "Чехол для iPhone 16 Pro",
+            "description": "Силиконовый чехол с поддержкой MagSafe, цвет графит",
+            "image": "",
+            "category": 1,
+            "price": "3990.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    },
+    {
+        "model": "catalog.product",
+        "pk": 10,
+        "fields": {
+            "name": "Кабель USB-C / USB-C 240 Вт",
+            "description": "Плетёный кабель длиной 2 метра для быстрой зарядки",
+            "image": "",
+            "category": 1,
+            "price": "1490.00",
+            "created_at": "2026-09-28T10:00:00+03:00",
+            "updated_at": "2026-09-28T10:00:00+03:00"
+        }
+    }
+]

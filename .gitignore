@@ -60,6 +60,7 @@ cover/
 # Django stuff:
 *.log
 local_settings.py
+media/
 db.sqlite3
 db.sqlite3-journal
 *.sqlite3
@@ -225,3 +226,4 @@ __marimo__/
 
 # Рабочие материалы (ТЗ, прототипы, отчёты)
 Claude_code/
+shell_queries.md
