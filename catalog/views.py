@@ -1,10 +1,10 @@
 """Контроллеры приложения catalog."""
 
 from django.contrib import messages
-from django.urls import reverse_lazy
-from django.views.generic import DetailView, FormView, ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import FeedbackForm
+from catalog.forms import FeedbackForm, ProductForm
 from catalog.models import Product
 
 
@@ -22,6 +22,43 @@ class ProductDetailView(DetailView):
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
+
+
+class ProductCreateView(CreateView):
+    """Создание нового товара."""
+
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+
+    def get_success_url(self):
+        """
+        После создания переходим на карточку нового товара.
+
+        Статический success_url тут не подходит: адрес зависит от pk,
+        который появляется только после сохранения объекта.
+        """
+        return reverse("catalog:product_detail", args=[self.object.pk])
+
+
+class ProductUpdateView(UpdateView):
+    """Редактирование существующего товара."""
+
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+
+    def get_success_url(self):
+        """После сохранения возвращаемся на карточку этого же товара (адрес зависит от pk)."""
+        return reverse("catalog:product_detail", args=[self.object.pk])
+
+
+class ProductDeleteView(DeleteView):
+    """Удаление товара с подтверждением."""
+
+    model = Product
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:home")
 
 
 class ContactsView(FormView):
