@@ -61,7 +61,13 @@ class FeedbackForm(forms.ModelForm):
 
 
 class ProductForm(StyledFormMixin, forms.ModelForm):
-    """Форма создания и редактирования товара с проверкой на запрещённые слова и отрицательную цену."""
+    """
+    Форма создания и редактирования товара с проверкой на запрещённые слова и отрицательную цену.
+
+    Поля owner и is_published сюда намеренно не входят: владелец выставляется
+    автоматически во вьюхе при создании, а публикацией управляет отдельная
+    ProductModeratorForm — ни то, ни другое пользователь не должен редактировать сам.
+    """
 
     class Meta:
         model = Product
@@ -94,3 +100,16 @@ class ProductForm(StyledFormMixin, forms.ModelForm):
         if price is not None and price < 0:
             raise forms.ValidationError("Цена не может быть отрицательной. Укажите цену от 0 и выше.")
         return price
+
+
+class ProductModeratorForm(StyledFormMixin, forms.ModelForm):
+    """Урезанная форма для модераторов: позволяет только снять товар с публикации или опубликовать его."""
+
+    class Meta:
+        model = Product
+        fields = ("is_published",)
+
+    def __init__(self, *args, **kwargs):
+        """Навесить Bootstrap-стили на единственное поле формы."""
+        super().__init__(*args, **kwargs)
+        self._apply_bootstrap_styles()
