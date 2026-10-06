@@ -45,7 +45,11 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blog",
+    "users",
 ]
+
+# Кастомная модель пользователя: вход по email вместо username
+AUTH_USER_MODEL = "users.User"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -136,3 +140,38 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# Аутентификация: куда отправлять анонима за входом и куда — после входа/выхода.
+# Строки — это имена маршрутов (namespace:name), Django сам разворачивает их в адрес.
+LOGIN_URL = "users:login"
+LOGIN_REDIRECT_URL = "catalog:home"
+LOGOUT_REDIRECT_URL = "catalog:home"
+
+# django.contrib.messages по умолчанию называет уровень ошибки "error" (код 40),
+# а в Bootstrap такого класса нет — только "alert-danger". Сопоставляем явно,
+# без импорта django.contrib.messages в settings.py (там Django ещё не готов).
+MESSAGE_TAGS = {
+    40: "danger",  # messages.ERROR
+}
+
+
+# Почта
+# Все параметры — из переменных окружения, секретов в коде нет.
+EMAIL_HOST = os.getenv("EMAIL_HOST", "")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", "465"))
+EMAIL_USE_SSL = os.getenv("EMAIL_USE_SSL", "True").lower() in ("true", "1", "yes")
+EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "False").lower() in ("true", "1", "yes")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "")
+# `or` вместо второго аргумента getenv: ключ в .env может существовать, но быть
+# пустой строкой — тогда нужен тот же запасной адрес, что и при отсутствии ключа.
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL") or EMAIL_HOST_USER or "webmaster@localhost"
+SERVER_EMAIL = os.getenv("SERVER_EMAIL") or DEFAULT_FROM_EMAIL
+
+# Без указанного EMAIL_HOST_USER письма печатаются в консоль сервера —
+# проект работает без настоящей SMTP-учётки.
+if EMAIL_HOST_USER:
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

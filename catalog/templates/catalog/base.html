@@ -21,6 +21,16 @@
                     {% include "catalog/includes/inc_menu.html" %}
                 </div>
                 <div class="col-12 col-md-9">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show"
+                                 role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                        aria-label="Закрыть"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
                     {% block content %}{% endblock %}
                 </div>
             </div>

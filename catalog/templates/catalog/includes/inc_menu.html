@@ -18,13 +18,24 @@
             <a class="nav-link text-white px-0" href="{% url 'blog:post_list' %}">Блог</a>
         </li>
     </ul>
-    <div class="dropdown">
-        <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-            Пользователь
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Профиль</a></li>
-            <li><a class="dropdown-item" href="#">Выход</a></li>
-        </ul>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="dropdown">
+            <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
+                {{ user.email }}
+            </button>
+            <ul class="dropdown-menu">
+                <li>
+                    <form method="post" action="{% url 'users:logout' %}" class="px-3 py-1">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-link dropdown-item-text p-0">Выход</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    {% else %}
+        <div class="d-grid gap-2">
+            <a href="{% url 'users:login' %}" class="btn btn-outline-light btn-sm">Вход</a>
+            <a href="{% url 'users:register' %}" class="btn btn-outline-light btn-sm">Регистрация</a>
+        </div>
+    {% endif %}
 </div>

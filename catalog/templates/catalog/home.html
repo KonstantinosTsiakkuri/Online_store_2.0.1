@@ -7,9 +7,11 @@
     <p class="text-center text-muted mb-4">
         Вы находитесь на сайте, предназначенном для продажи товаров
     </p>
-    <div class="d-flex justify-content-end mb-4">
-        <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Добавить товар</a>
-    </div>
+    {% if user.is_authenticated %}
+        <div class="d-flex justify-content-end mb-4">
+            <a href="{% url 'catalog:product_create' %}" class="btn btn-primary">Добавить товар</a>
+        </div>
+    {% endif %}
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for product in products %}
             <div class="col">
