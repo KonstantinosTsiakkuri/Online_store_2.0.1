@@ -1,6 +1,7 @@
 """Контроллеры приложения catalog."""
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
@@ -9,23 +10,23 @@ from catalog.models import Product
 
 
 class ProductListView(ListView):
-    """Главная страница: список всех товаров из базы."""
+    """Главная страница: список всех товаров из базы. Доступна анонимам."""
 
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
 
 
-class ProductDetailView(DetailView):
-    """Детальная страница товара. Несуществующий pk даёт 404 автоматически."""
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    """Детальная страница товара. Доступна только авторизованным, иначе редирект на вход."""
 
     model = Product
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
 
 
-class ProductCreateView(CreateView):
-    """Создание нового товара."""
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    """Создание нового товара. Доступно только авторизованным."""
 
     model = Product
     form_class = ProductForm
@@ -41,8 +42,8 @@ class ProductCreateView(CreateView):
         return reverse("catalog:product_detail", args=[self.object.pk])
 
 
-class ProductUpdateView(UpdateView):
-    """Редактирование существующего товара."""
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    """Редактирование существующего товара. Доступно только авторизованным."""
 
     model = Product
     form_class = ProductForm
@@ -53,8 +54,8 @@ class ProductUpdateView(UpdateView):
         return reverse("catalog:product_detail", args=[self.object.pk])
 
 
-class ProductDeleteView(DeleteView):
-    """Удаление товара с подтверждением."""
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    """Удаление товара с подтверждением. Доступно только авторизованным."""
 
     model = Product
     template_name = "catalog/product_confirm_delete.html"
