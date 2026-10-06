@@ -1,0 +1,28 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}Удаление товара{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a href="{% url 'catalog:product_detail' object.pk %}">{{ object.name }}</a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">Удаление</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4">Удаление товара</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <p>Вы уверены, что хотите удалить товар «{{ object.name }}»? Это действие необратимо.</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Да, удалить</button>
+                <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-outline-secondary">Отмена</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

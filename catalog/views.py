@@ -1,37 +1,79 @@
 """Контроллеры приложения catalog."""
 
 from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse, reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
-from catalog.forms import FeedbackForm
+from catalog.forms import FeedbackForm, ProductForm
 from catalog.models import Product
 
 
-def home(request: HttpRequest) -> HttpResponse:
-    """Главная страница со списком товаров из базы."""
-    products = Product.objects.all()
-    return render(request, "catalog/home.html", {"products": products})
+class ProductListView(ListView):
+    """Главная страница: список всех товаров из базы."""
+
+    model = Product
+    template_name = "catalog/home.html"
+    context_object_name = "products"
 
 
-def product_detail(request: HttpRequest, pk: int) -> HttpResponse:
-    """Детальная страница товара. Несуществующий pk даёт 404."""
-    product = get_object_or_404(Product, pk=pk)
-    return render(request, "catalog/product_detail.html", {"product": product})
+class ProductDetailView(DetailView):
+    """Детальная страница товара. Несуществующий pk даёт 404 автоматически."""
+
+    model = Product
+    template_name = "catalog/product_detail.html"
+    context_object_name = "product"
 
 
-def contacts(request: HttpRequest) -> HttpResponse:
+class ProductCreateView(CreateView):
+    """Создание нового товара."""
+
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+
+    def get_success_url(self):
+        """
+        После создания переходим на карточку нового товара.
+
+        Статический success_url тут не подходит: адрес зависит от pk,
+        который появляется только после сохранения объекта.
+        """
+        return reverse("catalog:product_detail", args=[self.object.pk])
+
+
+class ProductUpdateView(UpdateView):
+    """Редактирование существующего товара."""
+
+    model = Product
+    form_class = ProductForm
+    template_name = "catalog/product_form.html"
+
+    def get_success_url(self):
+        """После сохранения возвращаемся на карточку этого же товара (адрес зависит от pk)."""
+        return reverse("catalog:product_detail", args=[self.object.pk])
+
+
+class ProductDeleteView(DeleteView):
+    """Удаление товара с подтверждением."""
+
+    model = Product
+    template_name = "catalog/product_confirm_delete.html"
+    success_url = reverse_lazy("catalog:home")
+
+
+class ContactsView(FormView):
     """Страница контактов с формой обратной связи."""
-    if request.method == "POST":
-        form = FeedbackForm(request.POST)
-        if form.is_valid():
-            feedback = form.save()
-            print("Получено сообщение с формы обратной связи:")
-            print(f"  Имя: {feedback.name}")
-            print(f"  Телефон: {feedback.phone}")
-            print(f"  Сообщение: {feedback.message}")
-            messages.success(request, "Спасибо! Ваше сообщение отправлено.")
-            return redirect("catalog:contacts")
-    else:
-        form = FeedbackForm()
-    return render(request, "catalog/contacts.html", {"form": form})
+
+    template_name = "catalog/contacts.html"
+    form_class = FeedbackForm
+    success_url = reverse_lazy("catalog:contacts")
+
+    def form_valid(self, form):
+        """При валидной форме — сохранить обращение, напечатать его в консоль и показать сообщение об успехе."""
+        feedback = form.save()
+        print("Получено сообщение с формы обратной связи:")
+        print(f"  Имя: {feedback.name}")
+        print(f"  Телефон: {feedback.phone}")
+        print(f"  Сообщение: {feedback.message}")
+        messages.success(self.request, "Спасибо! Ваше сообщение отправлено.")
+        return super().form_valid(form)
