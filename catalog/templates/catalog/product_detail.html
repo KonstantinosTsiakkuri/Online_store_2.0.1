@@ -40,7 +40,11 @@
                 <tbody>
                     <tr>
                         <th scope="row" class="w-50">Категория</th>
-                        <td>{{ product.category.name }}</td>
+                        <td>
+                            <a href="{% url 'catalog:category_products' product.category.pk %}">
+                                {{ product.category.name }}
+                            </a>
+                        </td>
                     </tr>
                     <tr>
                         <th scope="row">Дата создания</th>

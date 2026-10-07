@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
+import sys
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -175,3 +176,29 @@ if EMAIL_HOST_USER:
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# Кеширование
+# CACHE_ENABLED=True включает Redis; иначе DummyCache — проект работает без Redis,
+# а код вьюх и сервисов не содержит ветвлений по этому флагу.
+CACHE_ENABLED = os.getenv("CACHE_ENABLED", "False") == "True"
+
+if CACHE_ENABLED:
+    CACHES = {
+        "default": {
+            "BACKEND": "django.core.cache.backends.redis.RedisCache",
+            "LOCATION": os.getenv("REDIS_LOCATION") or "redis://127.0.0.1:6379/1",
+        }
+    }
+else:
+    CACHES = {"default": {"BACKEND": "django.core.cache.backends.dummy.DummyCache"}}
+
+# При запуске тестов кеш всегда локальный: тесты не зависят от запущенного Redis
+# и не пишут в рабочую базу Redis.
+if "test" in sys.argv:
+    CACHES = {"default": {"BACKEND": "django.core.cache.backends.locmem.LocMemCache"}}
+
+# TTL в секундах. `or 900`, а не второй аргумент getenv: ключ в .env может существовать,
+# но быть пустым, и тогда int("") упал бы с ValueError при старте проекта.
+CACHE_TTL_PRODUCT_DETAIL = int(os.getenv("CACHE_TTL_PRODUCT_DETAIL") or 900)
+CACHE_TTL_CATEGORY_PRODUCTS = int(os.getenv("CACHE_TTL_CATEGORY_PRODUCTS") or 900)
