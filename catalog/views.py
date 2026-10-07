@@ -4,11 +4,13 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView, DeleteView, DetailView, FormView, ListView, UpdateView
 
 from catalog.forms import FeedbackForm, ProductForm, ProductModeratorForm
-from catalog.models import Product
+from catalog.models import Category, Product
+from catalog.services import get_products_by_category
 
 
 class ProductListView(ListView):
@@ -17,6 +19,30 @@ class ProductListView(ListView):
     model = Product
     template_name = "catalog/home.html"
     context_object_name = "products"
+
+
+class CategoryProductsView(ListView):
+    """Страница со списком всех товаров одной категории. Несуществующая категория даёт 404."""
+
+    template_name = "catalog/category_products.html"
+    context_object_name = "products"
+
+    def get_queryset(self):
+        """
+        Получить товары категории через сервис (там низкоуровневый кеш).
+
+        Категорию проверяем ДО обращения к сервису: иначе запрос к несуществующей
+        категории успел бы положить в Redis пустой ключ category_<левый id>, и только
+        потом вернулся бы 404.
+        """
+        self.category = get_object_or_404(Category, pk=self.kwargs["pk"])
+        return get_products_by_category(self.category.pk)
+
+    def get_context_data(self, **kwargs):
+        """Добавить в контекст саму категорию (название и описание для заголовка страницы)."""
+        context = super().get_context_data(**kwargs)
+        context["category"] = self.category
+        return context
 
 
 class ProductDetailView(LoginRequiredMixin, DetailView):

@@ -1,0 +1,31 @@
+{% extends "catalog/base.html" %}
+
+{% block title %}{{ category.name }}{% endblock %}
+
+{% block content %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'catalog:home' %}">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ category.name }}</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-2">{{ category.name }}</h1>
+    {% if category.description %}
+        <p class="text-muted mb-4">{{ category.description }}</p>
+    {% endif %}
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for product in products %}
+            <div class="col">
+                {% include "catalog/includes/inc_product_card.html" %}
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <div class="alert alert-info mb-0" role="alert">
+                    В этой категории пока нет товаров.
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
